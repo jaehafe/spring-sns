@@ -2,6 +2,9 @@ package org.oop.sns.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.oop.sns.controller.request.UserJoinRequest;
+import org.oop.sns.controller.response.Response;
+import org.oop.sns.controller.response.UserJoinResponse;
+import org.oop.sns.model.User;
 import org.oop.sns.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +20,8 @@ public class UserController {
 
     // TODO : implement
     @PostMapping("/join")
-    public void join(@RequestBody UserJoinRequest request) {
-        userService.join(request.getUsername(), request.getPassword());
+    public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
+        User user = userService.join(request.getUsername(), request.getPassword());
+        return Response.success(UserJoinResponse.fromUser(user));
     }
 }

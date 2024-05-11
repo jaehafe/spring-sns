@@ -1,6 +1,7 @@
 package org.oop.sns.service;
 
 import lombok.RequiredArgsConstructor;
+import org.oop.sns.exception.ErrorCode;
 import org.oop.sns.exception.SnsApplicationException;
 import org.oop.sns.model.User;
 import org.oop.sns.model.entity.UserEntity;
@@ -20,13 +21,13 @@ public class UserService {
     public User join(String username, String password) {
         // 회원가입하려는 username이 존재하는 user가 있는지
         userRepository.findByUserName(username).ifPresent(it -> {
-            throw new SnsApplicationException();
+            throw new SnsApplicationException(ErrorCode.DUPLICATE_USERNAME);
         });
 
         // 회원가입 진행 = user를 등록
-        userRepository.save(new UserEntity());
+        UserEntity userEntity = userRepository.save(UserEntity.of(username, password));
 
-        return new User();
+        return User.fromEntity(userEntity);
     }
 
     // TODO : implement
