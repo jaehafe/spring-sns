@@ -38,7 +38,7 @@ public class UserControllerTest {
         String username = "username";
         String password = "password";
 
-        when(userService.join()).thenReturn(mock(User.class));
+        when(userService.join(username, password)).thenReturn(mock(User.class));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -53,7 +53,7 @@ public class UserControllerTest {
         String username = "username";
         String password = "password";
 
-        when(userService.join()).thenThrow(new SnsApplicationException());
+        when(userService.join(username, password)).thenThrow(new SnsApplicationException());
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +68,7 @@ public class UserControllerTest {
         String username = "username";
         String password = "password";
 
-        when(userService.login()).thenReturn("test token");
+        when(userService.login(username, password)).thenReturn("test token");
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -83,7 +83,7 @@ public class UserControllerTest {
         String username = "username";
         String password = "password";
 
-        when(userService.join()).thenThrow(new SnsApplicationException());
+        when(userService.join(username, password)).thenThrow(new SnsApplicationException());
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,7 +98,7 @@ public class UserControllerTest {
         String username = "username";
         String password = "password";
 
-        when(userService.join()).thenThrow(new SnsApplicationException());
+        when(userService.join(username, password)).thenThrow(new SnsApplicationException());
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
