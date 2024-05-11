@@ -18,6 +18,7 @@ public class User {
     private Timestamp updatedAt;
     private Timestamp deletedAt;
 
+    // entity를 dto로 변환해주는 method
     public static User fromEntity(UserEntity entity) {
         return new User(
                 entity.getId(),

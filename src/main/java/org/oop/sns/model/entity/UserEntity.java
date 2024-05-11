@@ -2,6 +2,7 @@ package org.oop.sns.model.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -11,12 +12,13 @@ import java.sql.Timestamp;
 import java.time.Instant;
 
 
+@Setter
+@Getter
 @Entity
 @Table(name = "\"user\"")
-@Getter
-@Setter
-@SQLDelete(sql = "UPDATED \"user\" SET deleted_at = NOW() where id=?")
-@Where(clause = "deleted_at is NUL")
+@SQLDelete(sql = "UPDATE \"user\" SET removed_at = NOW() WHERE id=?")
+@Where(clause = "removed_at is NULL")
+@NoArgsConstructor
 public class UserEntity {
 
     @Id
@@ -44,7 +46,7 @@ public class UserEntity {
 
     @PrePersist
     void registeredAt() {
-        this.registeredAt = new Timestamp(Instant.now());
+        this.registeredAt = Timestamp.from(Instant.now());
     }
 
     @PreUpdate
@@ -56,7 +58,6 @@ public class UserEntity {
         UserEntity userEntity = new UserEntity();
         userEntity.setUserName(username);
         userEntity.setPassword(password);
-
         return userEntity;
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.oop.sns.controller.request.UserJoinRequest;
 import org.oop.sns.controller.request.UserLoginRequest;
+import org.oop.sns.exception.ErrorCode;
 import org.oop.sns.exception.SnsApplicationException;
 import org.oop.sns.model.User;
 import org.oop.sns.service.UserService;
@@ -35,29 +36,29 @@ public class UserControllerTest {
 
     @Test
     public void SignUp() throws Exception {
-        String username = "username";
+        String userName = "username";
         String password = "password";
 
-        when(userService.join(username, password)).thenReturn(mock(User.class));
+        when(userService.join(userName, password)).thenReturn(mock(User.class));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(username, password)))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName, password)))
                 ).andDo(print())
                 .andExpect(status().isOk());
 
     }
 
     @Test
-    public void SignUp_already_has_username() throws Exception {
-        String username = "username";
+    public void 회원가입시_이미_회원가입된_userName으로_회원가입을_하는경우_에러반환() throws Exception {
+        String userName = "username";
         String password = "password";
 
-        when(userService.join(username, password)).thenThrow(new SnsApplicationException());
+        when(userService.join(userName, password)).thenThrow(new SnsApplicationException(ErrorCode.DUPLICATE_USERNAME, "123"));
 
         mockMvc.perform(post("/api/v1/users/join")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(username, password)))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName, password)))
                 ).andDo(print())
                 .andExpect(status().isConflict());
 
@@ -65,14 +66,14 @@ public class UserControllerTest {
 
     @Test
     public void 로그인() throws Exception {
-        String username = "username";
+        String userName = "username";
         String password = "password";
 
-        when(userService.login(username, password)).thenReturn("test token");
+        when(userService.login(userName, password)).thenReturn("test token");
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(username, password)))
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password)))
                 ).andDo(print())
                 .andExpect(status().isOk());
 
@@ -80,14 +81,14 @@ public class UserControllerTest {
 
     @Test
     public void 로그인시_회원가입이_안된_username을_입력할경우_에러반환() throws Exception {
-        String username = "username";
+        String userName = "username";
         String password = "password";
 
-        when(userService.join(username, password)).thenThrow(new SnsApplicationException());
+        when(userService.join(userName, password)).thenThrow(new SnsApplicationException(ErrorCode.DUPLICATE_USERNAME, String.format("%s is duplicated", userName)));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(username, password)))
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password)))
                 ).andDo(print())
                 .andExpect(status().isNotFound());
 
@@ -98,7 +99,7 @@ public class UserControllerTest {
         String username = "username";
         String password = "password";
 
-        when(userService.join(username, password)).thenThrow(new SnsApplicationException());
+        when(userService.join(username, password)).thenThrow(new SnsApplicationException(ErrorCode.DUPLICATE_USERNAME, "123"));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)

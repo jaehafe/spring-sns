@@ -1,8 +1,9 @@
 package org.oop.sns.exception;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-// TODO : implement
+@Getter
 @AllArgsConstructor
 public class SnsApplicationException extends RuntimeException {
 
@@ -12,7 +13,7 @@ public class SnsApplicationException extends RuntimeException {
     @Override
     public String getMessage() {
         if (message == null) {
-            return errorCode.toString();
+            return errorCode.getMessage();
         }
 
         return String.format("%s. %s", errorCode.getMessage(), message);
