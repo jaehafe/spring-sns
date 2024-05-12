@@ -1,11 +1,13 @@
 package org.oop.sns.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.oop.sns.exception.ErrorCode;
 import org.oop.sns.exception.SnsApplicationException;
 import org.oop.sns.model.User;
 import org.oop.sns.model.entity.UserEntity;
 import org.oop.sns.repository.UserEntityRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,8 +15,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserEntityRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
-    // TODO : implement
+    @Transactional
     public User join(String userName, String password) {
         // 회원가입하려는 username이 존재하는 user가 있는지
         userRepository.findByUserName(userName).ifPresent(it -> {
@@ -22,7 +25,8 @@ public class UserService {
         });
 
         // 회원가입 진행 = user를 등록
-        UserEntity userEntity = userRepository.save(UserEntity.of(userName, password));
+        UserEntity userEntity = userRepository.save(UserEntity.of(userName, encoder.encode(password)));
+//        throw new RuntimeException();
         return User.fromEntity(userEntity);
     }
 
