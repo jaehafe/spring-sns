@@ -1,9 +1,11 @@
 package org.oop.sns.controller.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.oop.sns.model.User;
 import org.oop.sns.model.UserRole;
 
+@Getter
 @AllArgsConstructor
 public class UserJoinResponse {
 

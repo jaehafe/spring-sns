@@ -1,14 +1,33 @@
-spring.datasource:
-  hikari.maximum-pool-size: 4
-  url: jdbc:postgresql://ec2-52-86-115-245.compute-1.amazonaws.com/d2p70ft1bv6u4c
-  username: root
-  password: 123456789
-  platform: postgres
-  driver-class-name: org.postgresql.Driver
+#spring.datasource:
+#  hikari.maximum-pool-size: 4
+#  url: jdbc:postgresql://ec2-52-86-115-245.compute-1.amazonaws.com/d2p70ft1bv6u4c
+#  username: root
+#  password: 123456789
+#  platform: postgres
+#  driver-class-name: org.postgresql.Driver
+#
+#spring.jpa:
+#  database: postgresql
+#  hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+#  hibernate.ddl-auto: update
+#  properties.hibernate.format_sql: true
+#  show-sql: true
 
-spring.jpa:
-  database: postgresql
-  hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-  hibernate.ddl-auto: update
-  properties.hibernate.format_sql: true
-  show-sql: true
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sns
+    username: leejaeha
+    password: 123456789
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    open-in-view: false
+    defer-datasource-initialization: true
+    hibernate.ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+      hibernate.default_batch_fetch_size: 100
+  sql.init.mode: always
+#  data.rest:
+#    base-path: /api
+#    detection-strategy: annotated
