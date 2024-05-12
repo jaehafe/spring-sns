@@ -28,6 +28,12 @@ spring:
       hibernate.format_sql: true
       hibernate.default_batch_fetch_size: 100
   sql.init.mode: always
+
+jwt:
+  secret-key: ThisStatementIsJwtSecretKeyDoNotUseThisStatement
+  #  30d
+  token.expired-time-ms: 2592000000
+
 #  data.rest:
 #    base-path: /api
 #    detection-strategy: annotated

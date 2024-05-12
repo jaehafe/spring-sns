@@ -80,11 +80,11 @@ public class UserControllerTest {
     }
 
     @Test
-    public void 로그인시_회원가입이_안된_username을_입력할경우_에러반환() throws Exception {
-        String userName = "username";
+    public void 로그인시_회원가입이_안된_userName을_입력할경우_에러반환() throws Exception {
+        String userName = "userName";
         String password = "password";
 
-        when(userService.join(userName, password)).thenThrow(new SnsApplicationException(ErrorCode.DUPLICATE_USERNAME, String.format("%s is duplicated", userName)));
+        when(userService.login(userName, password)).thenThrow(new SnsApplicationException(ErrorCode.USER_NOT_FOUND));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,14 +96,14 @@ public class UserControllerTest {
 
     @Test
     public void 로그인시_틀린password_입력할경우_에러반환() throws Exception {
-        String username = "username";
+        String userName = "username";
         String password = "password";
 
-        when(userService.join(username, password)).thenThrow(new SnsApplicationException(ErrorCode.DUPLICATE_USERNAME, "123"));
+        when(userService.login(userName, password)).thenThrow(new SnsApplicationException(ErrorCode.INVALID_PASSWORD));
 
         mockMvc.perform(post("/api/v1/users/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(username, password)))
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName, password)))
                 ).andDo(print())
                 .andExpect(status().isUnauthorized());
 

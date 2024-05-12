@@ -2,8 +2,10 @@ package org.oop.sns.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.oop.sns.controller.request.UserJoinRequest;
+import org.oop.sns.controller.request.UserLoginRequest;
 import org.oop.sns.controller.response.Response;
 import org.oop.sns.controller.response.UserJoinResponse;
+import org.oop.sns.controller.response.UserLoginResponse;
 import org.oop.sns.model.User;
 import org.oop.sns.service.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,10 +20,15 @@ public class UserController {
 
     private final UserService userService;
 
-    // TODO : implement
     @PostMapping("/join")
     public Response<UserJoinResponse> join(@RequestBody UserJoinRequest request) {
         User user = userService.join(request.getUserName(), request.getPassword());
         return Response.success(UserJoinResponse.fromUser(user));
+    }
+
+    @PostMapping("/login")
+    public Response<UserLoginResponse> login(@RequestBody UserLoginRequest request) {
+        String token = userService.login(request.getUserName(), request.getPassword());
+        return Response.success(new UserLoginResponse(token));
     }
 }

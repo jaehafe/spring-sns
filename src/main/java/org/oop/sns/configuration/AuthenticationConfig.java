@@ -28,7 +28,7 @@ public class AuthenticationConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/", "/api/*/users/join", "/oauth2/**").permitAll()
+                        .requestMatchers("/", "/api/*/users/*", "/oauth2/**").permitAll()
 //                        .requestMatchers("/api/v1/user/**").hasRole("USER")
 //                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
