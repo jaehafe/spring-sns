@@ -18,12 +18,18 @@ public class UserService {
 
     private final UserEntityRepository userRepository;
     private final BCryptPasswordEncoder encoder;
+    private final UserEntityRepository userEntityRepository;
 
     @Value("${jwt.secret-key}")
     private String secretKey;
 
     @Value("${jwt.token.expired-time-ms}")
     private Long tokenExpiredTimeMs;
+
+    public User loadUserByUserName(String userName) throws SnsApplicationException {
+        return userEntityRepository.findByUserName(userName).map(User::fromEntity).orElseThrow(() ->
+                new SnsApplicationException(ErrorCode.USER_NOT_FOUND, String.format("%s not found", userName)));
+    }
 
     @Transactional
     public User join(String userName, String password) {

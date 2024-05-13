@@ -31,7 +31,8 @@ public class PostService {
                 );
 
         // post save
-        postEntityRepository.save(new PostEntity());
+        PostEntity saved = postEntityRepository.save(PostEntity.of(title, body, userEntity));
+
 
         // return
 
