@@ -41,9 +41,9 @@ public class AuthenticationConfig {
 //                        .requestMatchers("/api/v1/user/**").hasRole("USER")
 //                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
-                );
-//                .addFilterBefore(new JwtTokenFilter(key, userService), UsernamePasswordAuthenticationFilter.class);
-//                .httpBasic(withDefaults());
+                )
+                .addFilterBefore(new JwtTokenFilter(key, userService), UsernamePasswordAuthenticationFilter.class)
+                .httpBasic(withDefaults());
 
         return http.build();
     }

@@ -29,8 +29,10 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         // get header
         final String header = request.getHeader("Authorization");
+        System.out.println("header >>" + header);
         if(header == null || !header.startsWith("Bearer ")) {
             log.error("Authorization header is invalid");
             filterChain.doFilter(request, response);
@@ -58,7 +60,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             authenticationToken.setDetails(new WebAuthenticationDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         } catch (RuntimeException e) {
-            log.error(e.getMessage());
+            log.error("doFilterInternal error = " + e.getMessage());
             filterChain.doFilter(request, response);
             return;
         }
